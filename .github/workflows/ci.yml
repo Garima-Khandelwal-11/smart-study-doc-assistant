@@ -27,6 +27,12 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      - name: Cache Hugging Face model weights
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: hf-all-MiniLM-L6-v2
+
       - name: Sanity check - app imports
         env:
           DATABASE_URL: postgresql://ci:ci@localhost:5432/ci
