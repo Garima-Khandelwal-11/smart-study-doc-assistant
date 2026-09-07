@@ -1,0 +1,41 @@
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    container_name: pgvector-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: study_assistant
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgvector-data:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: ./backend
+    container_name: study-assistant-backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/study_assistant
+    volumes:
+      - hf-cache:/root/.cache/huggingface
+    depends_on:
+      - db
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: study-assistant-frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+
+volumes:
+  pgvector-data:
+    external: true
+  hf-cache:

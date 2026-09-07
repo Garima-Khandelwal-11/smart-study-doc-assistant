@@ -1,0 +1,16 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+
+# Environment variables
+.env
+
+# Node
+node_modules/
+
+# Build output
+dist/
+
+# Claude Code local session state
+.claude/
